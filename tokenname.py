@@ -13,7 +13,7 @@ def load_token_from_file(fname: str) -> str:
     if os.path.isfile(fname):
         # открываем файл и считываем токен
         with open(fname, 'r', encoding='utf-8') as token_file:
-            tokenname = token_file.readline()
+            tokenname = token_file.readline().strip()
 
     return tokenname
 # конец функции загрузки токена

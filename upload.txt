@@ -1,0 +1,6 @@
+использование командной строки в Python
+https://jenyay.net/Programming/Argparse#intro
+модуль colorama для вывода цветного текста в консоль
+https://habr.com/ru/sandbox/158854/
+
+
