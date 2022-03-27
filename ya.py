@@ -1,3 +1,4 @@
+import os
 import sys
 import argparse
 import requests
@@ -60,15 +61,30 @@ def ya_upload_file(file: str, url: str, token_file: str) -> bool:
 
     # если ошибка при обращении/создании папки на ресурсе 
     if response.status_code != 200:
-        print(Fore.RED + 'ERROR: ошибка обращения к {url}!')
+        print(Fore.RED + f'ERROR: ошибка обращения к {url}!')
         return False
 
     # формируем ссылку для загрузки файла
     params = {'path': UPLOAD_FOLDER + '/' + file.split('/')[len(file.split('/'))-1], 'overwrite': 'true'}
     response = requests.get(url + '/' + 'upload', headers=headers, params=params)
-
-    # загружаем файл на ресурс
-
+    # если ошибка при получении линка для загрузки
+    if response.status_code != 200:
+        print(Fore.RED + f'ERROR: ошибка формирования ссылки для загрузки!')
+        return False
+    # извлекаем ссылку для загрузки
+    href = response.json().get('href', '')
+    
+    # проверяем наличие файла для загрузки
+    if os.path.isfile(file):
+        # загружаем файл на ресурс
+        response = requests.put(href, data=open(file, 'rb'))
+        # если оншибка при загрузке
+        if response.status_code != 201:
+            print(Fore.RED + f'ERROR: ошибка загрузки файла на yandex.диск!')
+            return False
+    else:
+        print(Fore.RED + f'ERROR: файл {file} для загрузки не найден!')
+        return False        
 
     return True
 #
