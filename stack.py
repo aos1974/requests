@@ -1,5 +1,4 @@
 from datetime import date, datetime, timedelta
-from urllib import response
 import requests
 import colorama
 from colorama import Fore
@@ -9,19 +8,18 @@ from colorama import Fore
 #
 
 # кол-во дней за которое запрашиваются данные
-DAYS_BEFORE = 1
+DAYS_BEFORE = 2
 
 #
 # Глобальные функции модуля
 #
 
+# класс для работы с api.stackexchange.com 
 class StackApi:
 
     # переменные класса
     url = 'https://api.stackexchange.com/2.3'
     site = 'stackoverflow'
-
-    # /questions?fromdate=1648166400&todate=1648339200&order=desc&sort=activity&tagged=Python&site=stackoverflow
 
     # функция инициализация класса
     def __init__(self, site = '') -> None:
@@ -95,10 +93,13 @@ def main():
         print(Fore.YELLOW + f'Результаты поиска вопросов с {fromdate} по {todate} с тэгом "Python:"')
         print(Fore.WHITE)
         for question in list(questions['items']):
-            display_name = question[]
-            print('Дата: ', , 'Автор: ', , 'Тема: ', )
+            display_name = question['owner']['display_name']
+            display_date = question['creation_date']
+            display_title = question['title']
+            print('Дата: ', date.fromtimestamp(display_date), 'Автор: ', display_name, 'Тема: ', display_title)
     else:
         print(Fore.RED + f'ERROR: результаты с {fromdate} по {todate} не найдены!')
+        return False
 
     return True
 
